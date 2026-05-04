@@ -1,0 +1,48 @@
+site_name: R and RStudio on the Cluster
+site_url: https://finnsdottir.github.io/hpc_r_2026
+theme:
+  name: material
+  palette:
+    primary: deep purple
+  features:
+  - navigation.sections
+  - navigation.top
+  - content.code.copy
+
+markdown_extensions:
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.keys
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      
+nav:
+  - Introduction: index.md
+  - Land Acknowledgement: land_acknowledgement.markdown 
+  - Getting Started:
+    - HPC Crashcourse: terminal.md
+    - Accessing RStudio: rstudio.md
+  - Analysis with R:
+    - Analysing data in RStudio: analysing_rstudio.md
+    - Using R in the shell: rscripts.md
+    - Running jobs with R: batch_jobs.md
+  
+
+extra_css:
+  - stylesheets/extra.css
+

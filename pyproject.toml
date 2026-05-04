@@ -1,0 +1,11 @@
+[project]
+name = "intro-r-fall2025"
+version = "0.1.0"
+description = "R Intro mkdocs-material site"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "materials>=0.1.5",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.6.18",
+]
