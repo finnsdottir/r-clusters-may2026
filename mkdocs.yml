@@ -1,9 +1,9 @@
-site_name: R and RStudio on the Cluster
-site_url: https://finnsdottir.github.io/hpc_r_2026
+site_name: Introduction to using R on HPC clusters
+site_url: https://finnsdottir.github.io/r-on-the-clusters
 theme:
   name: material
   palette:
-    primary: deep purple
+    primary: blue
   features:
   - navigation.sections
   - navigation.top
