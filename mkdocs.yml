@@ -37,6 +37,7 @@ nav:
     - Using RStudio: basics.md
     - Basic syntax: syntax.md
   - Analysing data with R:
+    - Wrangling data: wrangling.md
   - Using R on the clusters:
     - Accessing RStudio: rstudio.md
     - Analysing data in RStudio: analysing_rstudio.md
