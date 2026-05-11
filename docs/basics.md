@@ -1,12 +1,12 @@
 # R and RStudio
 
-<i> What is R? </i> R is a specialized programming language for statistics. While R does have a fairly steep learning curve (compared to SPSS or STATA), it is free, open-source, extendable, customizable, and reproducible. 
+<b> What is R? </b> R is a specialized programming language for statistics. While R does have a fairly steep learning curve (compared to SPSS or STATA), it is a favourite for many researchers because it is free, open-source, extendable, customizable, and reproducible. 
 
-RStudio, on the other hand, is an integrated development environment (IDE) for R. Basically, it’s an easier and more intuitive way to work with R. When you use RStudio, you work with your data and write your scripts in the IDE, and then it executes your commands in R in the background. This is why you need both R and RStudio to use RStudio. 
+<b>RStudio</b>, meanwhile, is an integrated development environment (IDE) for R. Basically, it’s an easier and more intuitive interface that you can use to work with R. When you use RStudio, you work with your data and write your scripts in the IDE, and then it executes your commands in R in the background. This is why you need both R and RStudio to use RStudio. 
 
 ## Using RStudio
 
-When you open RStudio, you’ll see the interface which has a toolbar (with buttons including File, Edit, Code, etc.) and four panes. 
+When you open RStudio, you’ll see the interface with a toolbar (with buttons including File, Edit, Code, etc.) and four panes. 
 
 <figure markdown="span">
     ![interface](./content/rstudio_console.jpg){width=800}
@@ -36,5 +36,5 @@ For more information on all these tabs, check out the [RStudio IDE cheat sheet](
 
 There are two ways to run code in R. 
 
-1. Press the **Run** button on the top right of the Source Editor pane. This will run the line where your cursor is. To run more than one line of code, highlight the lines and then press one. 
+1. Press the **Run** button on the top right of the Source Editor pane. This will run the line where your cursor is. To run more than one line of code, highlight the lines you want to run and then press **Run**. 
 2. Use the keyboard shortcut ++ctrl+enter++ (on windows) or ++cmd+enter++ (on macbook). This will run the line where your cursor is. To run more than one line of code, highlight the lines and then use the keyboard shortcut. 

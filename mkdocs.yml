@@ -36,6 +36,7 @@ nav:
   - Introduction to R and RStudio:
     - Using RStudio: basics.md
     - Basic syntax: syntax.md
+    - Getting started in RStudio: getting_started.md
   - Analysing data with R:
     - Wrangling data: wrangling.md
   - Using R on the clusters:

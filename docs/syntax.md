@@ -1,6 +1,8 @@
 # Basic Syntax & Concepts
 
-Before we start working with our unmessy movies dataset,let's go over some of the basic concepts and syntax in R. One important thing to note is that all data structures in R are referred to as 'objects.' This means that data frames, vectors, and variables are all different kinds of objects in R. 
+Before we start working with our world values survey dataset,let's go over some of the basic concepts and syntax in R. 
+
+One important thing to note is that all data structures in R are referred to as 'objects.' This means that data frames, vectors, and variables are all different kinds of objects in R. 
 
 ## Operators
 Operators are special symbols or keywords used to perform operations on one or more values. Common operators include:
@@ -11,7 +13,7 @@ day <- 3
 month = 10
 ```
 !!!info "Note"
-    RStudio allows for several quick keyboard shortcuts. One is to press ++alt+hyphen++ (on PC) or ++option+hyphen++ (on mac) to write `<-`
+    RStudio allows for several quick keyboard shortcuts. One useful shortcut is ++alt+hyphen++ (on PC) or ++option+hyphen++ (on mac) to write the assignment operator `<-`.
 
 - Arithmetic operators. The operators `+`, `-`, `*`, and `/` are used for basic mathematical calculations, namely addition, subtraction, multiplication, and division. Try running the following in your Source Editor and watching what appears in the console:
 ```R
@@ -79,7 +81,7 @@ chris_age_vector <- c(44,46,42,45)
 Now that you've created these two vectors, you should see them in your environment in the top right pane of the RStudio console.
 
 !!!info "Note"
-    Be sure to include quotation marks around the text data you're combining into a vector. If you do not have them, R will assume that you are referring to objects, not data values.
+    Be sure to include quotation marks around the text data you're combining into a vector. If you do not have quotation marks, R will assume that you are referring to objects, not data values.
 
 You can call functions on vectors. For example, you can inspect the length, structure, and type of vectors. Run these three functions. Your output will appear in the console - did you get what you expected to see?
 ```R
