@@ -27,7 +27,7 @@ month = 10
     > 4/2
     [1] 2
     ```
-- Comparison operators. The operators `<`, `>`, and `==` return a logical value when used to compare two things. Try running the following:
+- Comparison operators. The operators `<`, `>`, `!=` and `==` return a logical value when used to compare two things. In R, you can use `!` to represent a negative (so, `!=` means not equal to). Notice also that you must use a double equals sign (a single equals sign is an assignment operator, as we covered above). Try running the following:
 ```R
 4!=3
 4<3
