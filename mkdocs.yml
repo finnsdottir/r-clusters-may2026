@@ -40,6 +40,7 @@ nav:
   - Analysing data with R:
     - Inspecting data: inspecting.md
     - Wrangling data: wrangling.md
+    - Visualizing data: visualizing.md
   - Using R on the clusters:
     - Accessing RStudio: rstudio.md
     - Analysing data in RStudio: analysing_rstudio.md
