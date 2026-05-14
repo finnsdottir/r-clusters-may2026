@@ -3,33 +3,26 @@
 
 Now that our data is uploaded into R, we can start to examine it. A viewer tab will likely have opened when you imported your data (in the Source Editor), but if not, you can run the command `View(wvs_data)` to see it. Remember, R is case sensitive, so be sure to write **View** not **view**. 
 
-Our dataset includes 23 variables. Try running `names(wvs_data)` to view a list of the variable names. You should see a list containing the following:
+Our dataset includes 16 variables. Try running `names(wvs_data)` to view a list of the variable names. You should see a list containing the following:
 
-- **A_YEAR** the year of data collection (2020 in every case here)
-- **N_REGION_ISO** the respondent's region (province)
-- **Q1** Important in life: Family
-- **Q46** Feeling of happiness
-- **Q47** State of health (subjective)
-- **Q49** Satisfaction with your life
-- **Q50** Satisfaction with financial situation of household
-- **Q56** Standard of living comparing with your parents
-- **Q57** Most people can be trusted
-- **Q75** Confidence: Universities
-- **Q95** Active/inactive memberships: Sport or recreational organization...
-- **Q178** Justifiable: Avoiding a fare on public transport
-- **Q199** Interest in politics
-- **Q201** Information source: Daily newspaper
-- **Q207** Information source: Social media
-- **Q260** Sex (respondents are asked to pick the one that aligns best with their identity)
-- **Q261** Year of birth 
-- **Q263** Respondent immigrant
-- **Q273** Marital status
-- **Q275** Highest educational level
-- **Q279** Employment status
-- **Q284** Sector of employment
-- **Q287** Social class (subjective)
+- **year** the year of data collection (2020 in every case here)
+- **province** the respondent's region (province)
+- **health** State of health (subjective)
+- **life_satis** Satisfaction with your life
+- **finance_satis** Satisfaction with financial situation of household
+- **stand_living6** Standard of living comparing with your parents
+- **avoid_fare** Justifiable: Avoiding a fare on public transport
+- **social_media** Information source: Social media
+- **sex** Sex (respondents are asked to pick the one that aligns best with their identity)
+- **birth_year** Year of birth 
+- **immigrant** Respondent born in this country or not
+- **marital_status** Marital status
+- **education** Highest educational level
+- **employed** Employment status
+- **sector** Sector of employment
+- **social_class** Social class (subjective)
 
-You can view the full codebook on the [World Values Survey website](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp). 
+You can view the full codebook for this subset of the World Values survey [here](./content/codebook.xlsx), and you can view the WVS documentation [here](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp). 
 
 ## Inspecting data
 
@@ -86,11 +79,11 @@ While factors look (and often behave) like character vectors, they are actually 
 
 Once created, factors can only contain a pre-defined set of values, known as levels. 
 
-Let's use factors to better understand the distribution of public and private sector employment in our dataset. First, we need to create a factor from the variable Q284. As the order of levels does not matter in this case, we can create an unordered, or nominal, factor. 
+Lets use factors to better understand the distribution of public and private sector employment in our dataset. First, we need to create a factor from the variable `sector`. As the order of levels does not matter in this case, we can create an unordered, or nominal, factor. 
 
 ```R
-#Start by creating a factor called emp_sector from the Q284 variable in our data frame. Remember that we use the $ symbol to locate a variable inside a data frame
-emp_sector <- factor(wvs_data$Q284)
+#Start by creating a factor called emp_sector from the sector variable in our data frame. Remember that we use the $ symbol to locate a variable inside a data frame
+emp_sector <- factor(wvs_data$sector)
 
 #Next, use the levels() function to print out the levels of the factor. You should see 4 different options for employment sector. 
 levels(emp_sector)
@@ -115,7 +108,7 @@ By default, R always sorts levels in alphabetical order. This can be an issue wh
 To create an ordered factor, we need to add two arguments to the `factor()` function that we used above: an `ordered` argument, and a `levels` one. Let's assign this new factor to an object called `sm_news`.
 
 ```R
-sm_news <- factor(wvs_data$Q207, 
+sm_news <- factor(wvs_data$social_media, 
                   ordered=TRUE,
                   levels = c("Daily","Weekly","Monthly","Less than monthly","Never"))
 ```
