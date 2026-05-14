@@ -18,7 +18,7 @@ Session 1:
 
 You will need to have R and RStudio downloaded on your computer before we start. Click [here to download R](https://muug.ca/mirror/cran/), and [here to download RStudio](https://posit.co/download/rstudio-desktop/). 
 
-We will be using a subset data from the [World Values Survey](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp) wave 7 survey of Canada. You can download the data [here]() and view the codebook for our data subset [here](./content/codebook.xlsx).
+We will be using a subset data from the [World Values Survey](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp) wave 7 survey of Canada. You can download the data [here](./content/data/wvs_subset.csv) and view the codebook for our data subset [here](./content/codebook.xlsx).
 
 I'd encourage you to follow along on your own in RStudio, but if you get stuck, or want to check something, you can download my script [here](). 
 

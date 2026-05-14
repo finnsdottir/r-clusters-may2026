@@ -1,7 +1,7 @@
 
 # Getting Started
 
-We're now going to put some of these functions and operations into practice, and use them to explore our dataset of movies. 
+We're now going to put some of these functions and operations into practice, and use them to explore our World Values Survey dataset.  
 
 ## Creating a project
 
@@ -39,13 +39,14 @@ dir.create('scripts')
 
 ## Importing data
 
-Now that we have our working directory set up, we can import our [canada_wvs2020_subset.csv](./content/canada_wvs_subset.csv) data. 
+Now that we have our working directory set up, we can import our [wvs2020_subset.csv](./content/data/wvs_subset.csv) data. 
 
 There are two ways to import data. The simplest way is to navigate to the **Import Dataset** dropdown menu in the toolbar of the **Environment** tab. From there, select the appropriate source (in this case, **From Text(base)...**). That will open a pop up window where you can navigate to, and select, your data. 
 
 Alternatively, you can run code to import the data. Run the code below, after updating the filepath with one that locates the data on your computer.
+
 ```R
-wvs_data <- read.csv("~/Downloads/canada_wvs2020_subset.csv")
+wvs_data <- read.csv("./Downloads/wvs_subset.csv")
 ```
 !!!note "Important!"
     I use a macbook, so the filepaths here are formatted for mac. If you are using Windows, you will need to update the filepaths as appropriate. In Windows, filepaths generally start with "C:/" 

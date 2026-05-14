@@ -3,22 +3,19 @@
 
 Now that our data is uploaded into R, we can start to examine it. A viewer tab will likely have opened when you imported your data (in the Source Editor), but if not, you can run the command `View(wvs_data)` to see it. Remember, R is case sensitive, so be sure to write **View** not **view**. 
 
-Our dataset includes 16 variables. Try running `names(wvs_data)` to view a list of the variable names. You should see a list containing the following:
+Our dataset includes 13 variables. Try running `names(wvs_data)` to view a list of the variable names. You should see a list containing the following:
 
 - **year** the year of data collection (2020 in every case here)
 - **province** the respondent's region (province)
 - **health** State of health (subjective)
 - **life_satis** Satisfaction with your life
-- **finance_satis** Satisfaction with financial situation of household
-- **stand_living6** Standard of living comparing with your parents
-- **avoid_fare** Justifiable: Avoiding a fare on public transport
 - **social_media** Information source: Social media
 - **sex** Sex (respondents are asked to pick the one that aligns best with their identity)
 - **birth_year** Year of birth 
 - **immigrant** Respondent born in this country or not
 - **marital_status** Marital status
 - **education** Highest educational level
-- **employed** Employment status
+- **emp_status_** Employment status
 - **sector** Sector of employment
 - **social_class** Social class (subjective)
 
@@ -65,9 +62,10 @@ wvs_data[2,-1]
     wvs_first100 <- wvs_data[1:100, ]
     ```
 Before we move on, let's practice saving data by saving our data frame "wvs_first100" to the data outputs folder. You may need to modify the file path in the function if you're using a PC.  
+
 ```R
 write.csv(wvs_first100, "./data_output/wvs_canada_first100.csv")
-``
+```
 
 ## Using factors
 

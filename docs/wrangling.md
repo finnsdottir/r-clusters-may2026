@@ -118,6 +118,18 @@ wvs_data2 <- wvs_data2 %>%
                          'Female'=1))
 ```
 
+Using the recode function will require that we list every value of the variable we're mutating, and offer an alternative value. This can be a bit unwieldy when dealing with variables with many possible values. In those cases, we can use a `case_when` function instead of `recode`, like so: 
+
+```R
+wvs_data2 <- wvs_data %>%
+    mutate(employed = case_when(
+        emp_status == 'Full time (30 hours a week or more)' ~ 1,
+        TRUE ~ 0 
+    ))
+```
+
+In the code above, we're telling R to create a new variable called `employed` where the value will be 1 when `emp_status` is equal to "Full time (30 hours a week or more)" and 0 in all other cases. Now we've created a new dummy variable for being employed or not. 
+
 ## Split-apply-combine
 Many data analysis tasks can be approached using the split-apply-combine paradigm: split the data into groups, apply some analysis to each group, and then combine the results. `dplyr` makes this very easy through the use of the `group_by()` function.
 
