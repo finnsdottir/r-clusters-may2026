@@ -107,6 +107,17 @@ wvs_data %>%
         mutate(age = (year-birth_year))
     ```
 
+We can also combine the mutate function with a `recode` function to create new variables with values based on an old one. Let's try creating a dummy variable for `female` using our `sex` variable. We'll assign this new variable to the same modified data frame as above.
+
+To do this, we need to pipe a mutate function into the data frame, and then name our new variable and define it as a recode function on sex. Notice that we use the single equals sign here (unlike when we filter and select) - remember, the single equals sign functions as an assignment operator. 
+
+```R
+wvs_data2 <- wvs_data2 %>% 
+  mutate(female = recode(sex,
+                         'Male'=0,
+                         'Female'=1))
+```
+
 ## Split-apply-combine
 Many data analysis tasks can be approached using the split-apply-combine paradigm: split the data into groups, apply some analysis to each group, and then combine the results. `dplyr` makes this very easy through the use of the `group_by()` function.
 
