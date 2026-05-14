@@ -1,4 +1,4 @@
-site_name: Introduction to using R on HPC clusters
+site_name: Using R on HPC clusters
 site_url: https://finnsdottir.github.io/r-clusters-may2026/
 theme:
   name: material
@@ -32,7 +32,7 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
       
 nav:
-  - Introduction: index.md
+  - Session 1: index.md
   - Introduction to R and RStudio:
     - Using RStudio: basics.md
     - Basic syntax: syntax.md
@@ -41,6 +41,7 @@ nav:
     - Inspecting data: inspecting.md
     - Wrangling data: wrangling.md
     - Visualizing data: visualizing.md
+  - Session 2: session2.md
   - Using R on the clusters:
     - Accessing RStudio: rstudio.md
     - Analysing data in RStudio: analysing_rstudio.md
