@@ -58,7 +58,7 @@ If you just call `squeue` alone, you'll get a list of all the jobs in the queue,
 
 Once your job is finished running, it will produce an output file called "slurm-##.out" where the ## is the job ID number for your job. You can open this file using `nano`. In it, you will find information about the status of your job (for example, where it failed if it did) as well as any output you printed from the R console (such as our printed checkpoints).  
 
-## Monitoring and evaluating a job.
+## Monitoring and evaluating a job
 
 Determining how much time and memory you need for a job is, to some extent, a trial and error sort of thing. (Remember, unless you're doing parallel processing, you're only using one core). Luckily, there are ways to measure how much memory your job is using, allowing you to refine your requests. 
 
@@ -107,7 +107,7 @@ For a full list of the formatting options, run `sacct --helpformat`.
     sstat --help
     ```
 
-## Downloading our output.
+## Downloading our output
 
 Now that we've run our analyses, let's quickly check that our outputs were produced and are in the right places. We should have two csv tables with our tidy linear regression outputs in the `table_output` folder, and our cleaned data in our `data_output` folder. 
 
@@ -143,7 +143,7 @@ Once you've pressed enter on that command, you will be prompted to enter your pa
 We also have the option to download and save more than one file at a time using wildcards `*`. Let's use the wildcard character to download both csv files (our smaller model from RStudio, and our full one from the batch job) from our `table_output` folder at the same time. This time I will also specify that I would like my files to be downloaded to the downloads folder on my computer.
 
 ```shell
-scp "finnsdot94@feb2026-uofa.c3.ca:R/table_output/*.csv" .
+scp "user001@r-hpc.ace-net.training:R/table_output/*.csv" ./Downloads/  
 ```
 
 Notice that, in addition to using a wildcard instead of a file name, we've also had to enclose our username, address, and file request in quotation marks. 
