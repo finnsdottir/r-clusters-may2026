@@ -20,7 +20,7 @@ dir.create('table_output')
 
 If not all your new folders show up when you run the lines, try refreshing the `Files` pane. 
 
-Next, our analyses will require the following packages; `tidyverse`, `stats`, `broom`, `naniar` and `coefplot`. For today's session, the packages we need are already downloaded in a shared directory. To direct R to that directory, you'll need to include the following line of code in your script:
+Next, our analyses will require the following packages; `tidyverse`, `stats`, `broom`, and `naniar`. For today's session, the packages we need are already downloaded in a shared directory. To direct R to that directory, you'll need to include the following line of code in your script:
 ```R
 .libPaths("/project/def-sponsor00/common/lib/R")
 ```
@@ -30,7 +30,6 @@ library(tidyverse)
 library(broom)
 library(naniar)
 library(stats)
-library(coefplot)
 ```
 Now that we have our RStudio set up, we need to upload our data. The data we're using in today's session is saved in a shared directory, so we can read it in like so:
 
@@ -41,7 +40,8 @@ This is the subset of data that we used in part one of the workshop, and include
 
 We're going to use this data to continue exploring the relationship between life satisfaction and various sociodemographic facors. **Specifically, we will test the impact of age on life satisfaction, controlling for sex, education, full time employment, and marital status.** We're going to test this relations with a linear regression using the `lm()` function in the `stats` package. 
 
-???note Other ways to upload data
+???note "Other ways to upload data"
+
   1. Data can be moved into the cluster using [Globus](https://docs.alliancecan.ca/wiki/Globus/en). Here's a [video explaining how](https://www.youtube.com/watch?v=0JJaFV4PEhk).
   2. You can import data directly into JupyterHub in your broswer. After launching a server, with the JupyterLab user interface, select the [upload files button](./content/upload_file_jupyter.png) and open the desired file in your finder. 
   3. Using a secure copy protocol, or `scp`. The `scp` command follows the structure `scp <file start location> <file end location>` whether you are moving data on to the remote server from your computer, or from the remote server on to your computer. When the file location is on the remote server, it must start with `<username>@<remote server address>:` and then the file location on the server. 
@@ -77,7 +77,7 @@ Run `unique()` again and observe what happened to the 'Don't know' values in edu
 
   In this code, we use the function `replace_with_na_all` and supply it with the conditional argument replacing any variable's (represented by ~.x) specified missing value with `NA`. We then assign it into a modified data frame. 
 
-We're now going further recode the `education` variable to create a dummy for university degree. Remember that we can do this using the `mutate` and `case_when()` functions in `dplyr`. 
+We're now going further recode the `education` variable to create a dummy for university degree. Remember that we can do this using the `mutate` and `case_when()` or `recode` functions in `dplyr`. 
 
 ```R
 wvs_data2 <- wvs_data2 %>% 
@@ -97,6 +97,7 @@ wvs_data2 <- wvs_data2 %>%
     TRUE ~ 0 
     
   ))
+
 ```
 
 ## Testing statistical relationships
@@ -106,55 +107,28 @@ Now that our data is ready, let's start thinking about the relationship between 
 ```R
 cor(wvs_data2$age, wvs_data2$life_satis)
 ```
-This should produce a correlation coefficient of around 0.246 in your console. That represents a weak positive correlation between age and life satisfaction. 
+This should produce a correlation coefficient of around 0.246 in your console. That represents a weak positive correlation between age and life satisfaction, meaning that older folks are slightly more satisfied with the lives than younger ones.
 
 Luckily, our data on age and life satisfaction is complete, or else our `cor()` function would return `NA`. If we had any missing data, we would need to include the argument `use='complete.obs'` within the parantheses to tell the function to ignore incomplete cases. Remember that you can also go to the "Help" tab in RStudio to learn more about individual packages or functions. 
 
+Taking this another step further, let's now run a linear regression of life satisfaction on age to test the statistical significant of the relationship. We do this with the `lm()` function in the `stats` package. The basic structure of a linear regression in R is `model <- lm(x ~ y, data=data)`. 
 
-
-
-
-
-```R
-cor(data2$income, data2$highest_grade, use='complete.obs') 
-```
-
-This function returns a correlation of 0.380902, indicating a moderate positive relationship between education and income - just as we saw in the scatterplot. 
-
-Taking this another step further, let's now run a linear regression of income on education to test the statistical significant of the relationship. We do this with the `lm()` function in the `stats` package. The basic structure of a linear regression in R is `model <- lm(x ~ y, data=data)`. 
+Let's run this model, assiging it to an object named `model.1`. Run the `summary()` function on the model afterwards to print the regression results to your console. 
 
 ```R
-model.1 <- lm(income ~ highest_grade, data=data2)
+model.1 <- lm(life_satis ~ age, data=wvs_data2)
 summary(model.1)
 ```
+What do the results tell us about the relationship between age and life satisfaction? Note that now that we're using inferential methods, we can speak about the population in general, not just about our sample. 
 
-What do the results tell us about the relationship between income and education? 
-
-Obviously, the relationship between these things is more complicated. So, let's try adding some control variables to see how race, age, rural residence, and marital status might influence the effect of education on income. Before we do that, we'll need to recode some of our categorical variables into dummy variables. We can do this using the `mutate` function in `dplyr`, which allows us to preserve the original variable. First, let's recode race and marital status into dummies for white and married:
-
-
-As shown above, `mutate` can be combined with a `recode` function to recode the values of a variable one by one. However, this can be a bit cumbersome when dealing with a variable with multiple possible values. In these cases, `case_when` comes quite in handy. Let's now use `case_when` to recode residence and children. In this case, we'll recode them to test whether rural residence and having a large family impact the relationship between education and income.
-
-```R
-data2 <- data2 %>%
-  mutate(rural = case_when(
-    residence == 8 ~ 1,
-    TRUE ~ 0))
-
-data2 <- data2 %>%
-  mutate(child5 = case_when(
-    children >= 5 ~ 1,
-    TRUE ~ 0))
-```
-
-Now, we can put these into our model. We can build on the basic linear model structure in R by adding control variables behind the independent variable.
+Obviously, the relationship between these things is more complicated. So, let's try adding some control variables to see how that influences the slight, positive, relationship between age and life satisfaction. We can build on the basic linear model structure in R by adding control variables behind the independent variable with `+` signs.
 
 ```R 
-model.2 <- lm(income ~ highest_grade + age + married + white + rural + child5, data=data2)
+model.2 <- lm(life_satis ~ age + female + uni_degree + employed + married, data = wvs_data2)
 summary(model.2)
 ```
 
-What does this regression tell us about the sociodemographic factors influencing the effect of education on income? 
+What does this regression tell us about the sociodemographic factors influencing life satisfaction among Canadians? 
 
 Unfortunately, the way R naturally displays regression output is quite messy. We can produce a much nicer output using the `tidy` function from the `broom` package. Let's call `tidy` on our second model, and then save that output as a csv file to our data output folder.
 
@@ -164,14 +138,8 @@ tidy_model
 
 write.csv(tidy_model, "./table_output/tidy_lm_model.csv")
 ```
-
-Let's plot out the coefficients now, using the `coefplot` package. We can save this plot using the 'Export' tool under the Plots tab in RStudio. 
-
-```R
-coefplot(model.2, intercept=FALSE)
-```
-Let's now save our modified data, and our R script. You can save your script in the browser window, and run the following to save your data:
+Now that we've created a script that cleans our data and runs our analyses, we'll need to modify it to work as a batch job on the cluster. But first, save your modified data and your R script. You can save your script in the browser window, and run the following to save your data:
 
 ```R
-write.csv(data2, "./data_output/modified_nlsc_data.csv")
+write.csv(wvs_data2, "./data_output/modified_wvs_subset.csv")
 ```
