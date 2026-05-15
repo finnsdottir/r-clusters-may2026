@@ -44,7 +44,7 @@ if (file.exists("./data_output/modified_full_wvs_data.csv")){
         marital_status == "Living together as married" ~ 1,
         marital_status == 'Married' ~ 1, 
         TRUE ~ 0))
-    write.csv(wvs_data, "./data_output.modified_full_wvs_data.csv")
+    write.csv(wvs_data, "./data_output/modified_full_wvs_data.csv")
   }
 
 print("data cleaning complete.")

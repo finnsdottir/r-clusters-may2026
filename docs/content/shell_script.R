@@ -1,5 +1,3 @@
-setwd('R')
-
 .libPaths("/project/def-sponsor00/common/lib/R")
 
 library(tidyverse)
@@ -27,8 +25,14 @@ if (file.exists("./data_output/modified_full_wvs_data.csv")){
     write.csv(wvs_data, "./data_output/modified_full_wvs_data.csv")
   }
 
+print("data cleaning complete.")
+
+Sys.sleep(120)
+
 if (! file.exists("./table_output/full_tidy_model.csv")){
   model <- lm(life_satis ~ age + female + uni_degree + employed + married, data = wvs_data)
   tidy.model <- tidy(model)
   write.csv(tidy.model, "./table_output/full_tidy_model.csv")
 }
+
+print("regression model complete.")

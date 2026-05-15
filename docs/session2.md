@@ -20,7 +20,7 @@ This session is suitable for those with some R experience, who feel comfortable 
 
 For the first half of today's session, we'll be using the same subset of the World Values Survey wave 7 data on Canada. You can download it [here](./content/data/wvs_subset_modified.csv). When we go to write and submit a job on the training cluster, we'll use a larger version of the dataset, which you can download [here](./content/data/full_wvs_canada_data_modified.csv). You can view the codebook for our data subset [here](./content/codebook.xlsxnWV7.jsp) or visit the [WVS wave 7 website](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp) to access the full survey documentation.
 
-I'd encourage you to follow along in R and RStudio, but if you get stuck or want to check something, you can download my [RStudio script](./content/rstudio_script.R), my [R script for the shell](./content/shell_script.R), and my [job script](./content/shell_job.sh). 
+I'd encourage you to follow along in R and RStudio, but if you get stuck or want to check something, you can download my [RStudio script](./content/studio_script.R), my [R script for the shell](./content/shell_script.R), and my [job script](./content/shell_job.sh). 
 
 ???note "Further resources."
     - [High-performance research computing in R](https://mint.westdri.ca/r/wb_hpc_slides.html#/title-slide)
