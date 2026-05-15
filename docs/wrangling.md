@@ -193,3 +193,9 @@ How many respondents report having completed university degrees? What is the mos
 wvs_data2 %>% 
   count(education, sort=TRUE)
 ```
+
+Go ahead and save the modified data you've created. Save it to the `data_output` folder we created using the `write_csv` function and name it 'modified_wvs_data.csv', like so: 
+
+```R
+write.csv(wsv_data2, "./data_output/modified_wvs_data.csv")
+```

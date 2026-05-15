@@ -22,30 +22,30 @@ Thus, the template for graphic in  `ggplot2` is:
     <GEOM_FUNCTION>()
 ```
 
-Using this template, let's make a ggplot plotting the relationship between self-identified social class and life satisfaction. Let's use a scatterplot to visualize this relationship, using `geom_point()`. 
+Using this template, let's make a ggplot plotting the relationship between age and life satisfaction. Let's use a scatterplot to visualize this relationship, using `geom_point()`. 
 
 ```R
 wvs_data2 %>%
-  ggplot(aes(x=social_class, y=life_satis))+geom_point()
+  ggplot(aes(x=age, y=life_satis))+geom_point()
 ```
 This should produce a plot similar to this one, in the bottom right pane of your RStudio window. 
 
 <figure markdown="span">
-    ![plot](./content/class_satis_scatter.jpeg){width=800}
+    ![plot](./content/age_satis_scatter.jpeg){width=800}
     <figcaption></figcaption>
 </figure>
 
-What do you think of this plot? Does it do a good job communicating the relationship between social class and life satisfaction? 
+What do you think of this plot? Does it do a good job communicating the relationship between age and life satisfaction? 
 
 ## Customizing plots
 
 `ggplot2` offers a variety of options for customization. You can add customize the transparency of the points in your plots by using a `alpha` argument in your `geom_point()` function. You can use `geom_jitter()` to include jitter in your plots. 
 
-You can also use a `aes(color)` arugment inside the geom_function to customize the colour of your data points. For this, you can use either a set colour, or assign colours based on another variable. Let's try customizing the plot we made for social class and life satisfaction. 
+You can also use a `aes(color)` arugment inside the geom_function to customize the colour of your data points. For this, you can use either a set colour, or assign colours based on another variable. Let's try customizing the plot we made for age and life satisfaction by adding jitter and assigning colour based on sex. 
 
 ```R
 colourful_plot <- wvs_data2 %>% 
-  ggplot(aes(x=social_class, y=life_satis)) + geom_jitter(aes(color=social_class), alpha=0.5)
+  ggplot(aes(x=age, y=life_satis)) + geom_jitter(aes(color=sex), alpha=0.5)
 
 #you will likely need to run a line with just the name of the plot to have it show up in the plots pane
 colourful_plot
@@ -68,7 +68,7 @@ Feel free to play around with the colours, transparency, jitter, and style. For 
 
 There are other, better, options for plotting categorical data. The type of plot being produced is dtermined by the geom function - the second piece of the ggplot formula. In addition to `geom_point` and `geom_jitter`, which we have already seen, you can also use `geom_boxplot` to make box plots, or `geom_bar` to make barplots. 
 
-**Practice.** Now, let's try making a boxplot to visualize this relationship between social class and life satisfaction. Remember that you use `geom_boxplot()` to create a boxplot. You can add colours to boxplots using the `aes(fill)` argument inside the geom_function. 
+**Practice.** Now, let's try making a boxplot to visualize the relationship between self-identified social class and life satisfaction. Remember that you use `geom_boxplot()` to create a boxplot. You can add colours to boxplots using the `aes(fill)` argument inside the geom_function. 
 
 ???note "Solution"
     ```R
@@ -89,9 +89,9 @@ wvs_data2 %>%
     theme(axis.text.x = element_blank())
 
 ggsave("./fig_output/colourful_boxplot.png")
- ```
+```
 
-You should end up with a plot similar to this one: 
+You should end up with a plot similar to this one. What does it tell us about the relationship between social class and life satisfaction? 
 
 <figure markdown="span">
     ![plot](./content/colourful_boxplot.jpeg){width=800}
