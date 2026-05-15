@@ -7,7 +7,6 @@ This session is suitable for beginners with no prior knowledge of R. There are n
 
 ## Learning outcomes 
 
-Session 1: 
 1. Learn to use RStudio
 2. Become familiar with the basic syntax and concepts of R
 3. Be able to create projects and organized working directories
@@ -20,7 +19,7 @@ You will need to have R and RStudio downloaded on your computer before we start.
 
 We will be using a subset data from the [World Values Survey](https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp) wave 7 survey of Canada. You can download the data [here](./content/data/wvs_subset.csv) and view the codebook for our data subset [here](./content/codebook.xlsx).
 
-I'd encourage you to follow along on your own in RStudio, but if you get stuck, or want to check something, you can download my script [here](). 
+I'd encourage you to follow along on your own in RStudio, but if you get stuck, or want to check something, you can download my script [here](./content/day1_script.R). 
 
 !!!note ""
     Instructor: Maria Sigridur Finnsdottir, PhD. 

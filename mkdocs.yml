@@ -32,18 +32,17 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
       
 nav:
-  - Session 1: index.md
-  - Introduction to R and RStudio:
+  - Introduction to R and RStudio (Session 1):
+    - Introduction: index.md
     - Using RStudio: basics.md
     - Basic syntax: syntax.md
     - Getting started in RStudio: getting_started.md
-  - Analysing data with R:
     - Inspecting data: inspecting.md
     - Wrangling data: wrangling.md
     - Visualizing data: visualizing.md
-  - Session 2: session2.md
-  - Using R on the clusters:
-    - Accessing RStudio: rstudio.md
+  - Using R on the clusters (Session 2):
+    - Introduction: session2.md
+    - Accessing R and RStudio: rstudio.md
     - Analysing data in RStudio: analysing_rstudio.md
     - Using R in the shell: rscripts.md
     - Running jobs with R: batch_jobs.md
