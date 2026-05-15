@@ -2,47 +2,44 @@
 
 Now that we have our R script written for a cluster job, we need to write a script that runs that job. We'll use `nano` again here. 
 
-The first step in writing your job script is to define the script interpreter (basically, telling the shell what language we'll be using):
+The first step in writing your job script is to define the script interpreter (basically, telling the shell what language we'll be using). In this case, we'll be using "bash":
 
 ```shell
 #!/bin/bash
 ```
 
-In this case, we're telling the shell that we're coding in bash. 
-
 Next, we need to define the requests in our job so that the scheduler knows how much memory, how much time, and how much compute (CPUs or GPUs) we need. Here, since we're running a pretty small job, we'll just ask for 3 minutes, 1GB of memory, and 1 CPU. We'll also give our job a name so that it's easy to find in the queue. 
 
 ```shell
 #SBATCH --time=00:03:00
-#SBATCH --mem_per-cpu=1G
+#SBATCH --mem-per-cpu=1G
 #SBATCH --cpus-per-task=1
 #SBATCH --job-name="marias_lm"
 ```
-
 While you do need to specify how much time you need for every job, you can choose not to specify your memory or compute needs. In those cases, you will be alloted a default amount by the system (256MB per core of memory, and one core). You would only ever use more than one core if your script was set up to run in parallel. 
 
 !!! note ""
     For a full list of the options you can use to describe your job with SBATCH, you can run the following command `sbatch --help`. You can also find more information on setting up and running jobs in the [Alliance documentation](https://docs.alliancecan.ca/wiki/Running_jobs#Use_sbatch_to_submit_jobs). 
 
-The last thing we need to do in our job script is to load an R module and run our R script. If your R script is not in the same folder as your job script, you'll need to add the file path. 
+The last thing we need to do in our job script is to load an R module and run our R script. If your R script is not in the same folder as your job script, you'll need to add the relative file path. 
 
 ```shell
 module load r/4.5.0
 Rscript shell_script.R
 ```
-To save your script, press ++cmd+o++ (on mac) or ++ctrl+o++ (on windows). It will prompt you to name the file and save it. I've named mine `shell_job.sh`. Then you can press ++cmd+x++ (on mac) or ++ctrl+x++ (on windows) to close the text editor. 
+To save your script, press ++cmd+o++ (on mac) or ++ctrl+o++ (on windows). It will prompt you to name the file and save it. I've named mine `job_script.sh`. Then you can press ++cmd+x++ (on mac) or ++ctrl+x++ (on windows) to close the text editor. 
 
-Next, to run your job, call `sbatch` followed by the same of your job script. When your job is submitted, there should be a line of output printed to the console with the name of your job, like this: 
+Next, to run your job, call `sbatch` followed by the name of your job script. When your job is submitted, there should be a line of output printed to the console with the name of your job, like this: 
 
 ```shell
-sbatch shell_job.sh
-Submitted batch job 19
+sbatch job_script.sh
+Submitted batch job 13
 ```
 
-While it is running, you can watch its progress by calling `squeue` followed by your username, like so:
+While it is running, you can watch its progress by calling `squeue` followed by `-u` and your username, like so:
 
 ```shell
-squeue -u finnsdot94
+squeue -u user001
 ```
 
 This command will print out information about your job, including:
@@ -57,9 +54,9 @@ This command will print out information about your job, including:
     <figcaption></figcaption>
 </figure>
 
-If you just call `squeue` alone, you'll get a list of all the jobs in the queue. For 
+If you just call `squeue` alone, you'll get a list of all the jobs in the queue, not just yours. 
 
-Once your job is finished running, it will produce an output file called "slurm-##.out". You can open this file using `nano`. In it, you will find information about the status of your job (for example, where it failed if it did) as well as any output you printed from the R console.  
+Once your job is finished running, it will produce an output file called "slurm-##.out" where the ## is the job ID number for your job. You can open this file using `nano`. In it, you will find information about the status of your job (for example, where it failed if it did) as well as any output you printed from the R console (such as our printed checkpoints).  
 
 ## Monitoring and evaluating a job.
 
@@ -72,7 +69,7 @@ One way to tell if your job needed more memory or time than it had is to check t
 You can also use the command `sacct` after your job is done running to evaluate it. `saact` displays account data for all jobs and job steps in the log (for more on the command, check out the [documentation](https://slurm.schedmd.com/sacct.html)). Let's try running it now to see how much time our job took and how much memory it used: 
 
 ```shell
-sacct -o JobID,MaxRSS,Elapsed -j 19.batch
+sacct -o JobID,MaxRSS,Elapsed -j 13.batch
 ```
 
 In the above block of code, `-o` refers to our request for format. In this case, we are only asking for the job id, the memory used, and the time elapsed - in that order. We then use the argument `-j` to specify the job, and follow it with our job id. 
@@ -82,10 +79,10 @@ This command produces the following output in the shell:
 ```shell
 JobID            MaxRSS    Elapsed 
 ------------ ---------- ---------- 
-19.batch        187932K   00:01:06 
+13.batch        141248K   00:02:02 
 ```
 
-According to this, our job used 187932KB of memory (or, 187.8MB) and only 1 minute and 6 seconds. Based on this, next time we run this or a similar job, we should decrease our memory and time requests. 
+According to this, our job used 141248KB of memory (or, 141.3MB) and took only 2 minutes and 2 seconds to complete (include our two minute system sleep). Based on this, next time we run this or a similar job, we should decrease our memory and time requests. This is both a best practice for use of shared resources (the Alliance's computing systems) and a way to get your job to run more promptly (smaller jobs generally wait in the queue for less time).
 
 For a full list of the formatting options, run `sacct --helpformat`.
 
@@ -112,14 +109,14 @@ For a full list of the formatting options, run `sacct --helpformat`.
 
 ## Downloading our output.
 
-Now that we've run our analyses, let's quickly check that our outputs were produced and are in the right places. We should have two csv tables with our tidy linear regression outputs in the `table_output` folder, cleaned data in our `data_output` folder, and a coefficient plot in our `fig_output` folder. 
+Now that we've run our analyses, let's quickly check that our outputs were produced and are in the right places. We should have two csv tables with our tidy linear regression outputs in the `table_output` folder, and our cleaned data in our `data_output` folder. 
 
 To look inside the folders without having to change directories, we can use the `ls` command followed by the subfolder name:
 
 ```shell
-ls fig_ouput
+ls fig_output
 ```
-Check all three folders and make sure that all your output saved properly. Once you are sure that it did, you can close your remote session. To do so, simply use the command `exit`.
+Check both folders and make sure that all your output saved properly. Once you are sure that it did, you can close your remote session. To do so, simply type the command `exit` and hit enter. You should be able to tell from the prompt line in your terminal that you are working locally again (look at the username and location in the prompt line). 
 
 Now that we are working locally, we can download our files from the remote server. We'll do this with `scp` (secure copy program). First, we need to call `scp` followed by arguments that describe:
 
@@ -128,32 +125,27 @@ Now that we are working locally, we can download our files from the remote serve
 - The location and name of the file we want to download
 - The location we want the file to be downloaded to
 
-Let's try this first with our coefficient plot, inside the `fig_output` folder. Let's save it to our current working directory by using `.` as the location. 
+Let's try this first with our modified data set, inside the `data_output` folder. Let's save it to our current working directory by using `.` as the location. 
 
 ```shell
-scp finnsdot94@feb2026-uofa.c3.ca:R/fig_output/coef_plot.png .
+scp user001@r-hpc.ace-net.training:R/data_output/modified_full_wvs_data.csv .
 ```
 
 In the code above, I first call `scp`, then enter my username `@` the remote server's address. The name and location of the file come next, after a colon `:`. Finally, I've used a period `.` to tell the computer to save the file in my current working directory. You can also put a file path in place of the period to save your files elsewhere. 
 
-Once you've pressed enter on that command, you will be prompted to enter your password. Once you've succesfully connected, you should see the status of your download pop up in the shell. 
+Once you've pressed enter on that command, you will be prompted to enter your password on the remote system. Once you've succesfully connected, you should see the status of your download pop up in the shell. 
 
 <figure markdown="span">
-    ![scatterplot](./content/scp_progress.png){width=600}
+    ![progress bar](./content/scp_progress.png){width=600}
     <figcaption></figcaption>
 </figure>
 
-We also have the option to download and save more than one file at a time using wildcards `*`. Let's use the wildcard character to download both csv files from our `table_output` folder at the same time. 
+We also have the option to download and save more than one file at a time using wildcards `*`. Let's use the wildcard character to download both csv files (our smaller model from RStudio, and our full one from the batch job) from our `table_output` folder at the same time. This time I will also specify that I would like my files to be downloaded to the downloads folder on my computer.
 
 ```shell
 scp "finnsdot94@feb2026-uofa.c3.ca:R/table_output/*.csv" .
 ```
 
-You should notice that, in addition to using a wildcard instead of a file name, we've also had to enclose our username, address, and file request in quotation marks. 
+Notice that, in addition to using a wildcard instead of a file name, we've also had to enclose our username, address, and file request in quotation marks. 
 
-Finally, use `scp` to download our cleaned/modified data file. 
-
-???note "Solution."
-    ```shell
-    scp finnsdot94@feb2026-uofa.c3.ca:R/data_output/modified_nlsc_data.csv .
-    ```
+**Congratulations!** You have now succesfully run a batch job R analysis and downloaded your results! 
