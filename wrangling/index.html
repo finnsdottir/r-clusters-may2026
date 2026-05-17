@@ -1,0 +1,1102 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://finnsdottir.github.io/r-clusters-may2026/wrangling/">
+      
+      
+        <link rel="prev" href="../inspecting/">
+      
+      
+        <link rel="next" href="../visualizing/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Wrangling data - Using R on HPC clusters</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#data-wrangling-with-dplyr" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Using R on HPC clusters" class="md-header__button md-logo" aria-label="Using R on HPC clusters" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Using R on HPC clusters
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Wrangling data
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Using R on HPC clusters" class="md-nav__button md-logo" aria-label="Using R on HPC clusters" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Using R on HPC clusters
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to R and RStudio (Session 1)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction to R and RStudio (Session 1)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basic syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started in RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inspecting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inspecting data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wrangling data
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wrangling data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#selecting-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selecting &amp; filtering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mutate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#split-apply-combine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split-apply-combine
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Split-apply-combine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-summarize-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The summarize() function
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Counting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualizing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualizing data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using R on the clusters (Session 2)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using R on the clusters (Session 2)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../session2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rstudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accessing R and RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analysing_rstudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysing data in RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rscripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using R in the shell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../batch_jobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running jobs with R
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#selecting-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selecting &amp; filtering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mutate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#split-apply-combine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split-apply-combine
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Split-apply-combine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-summarize-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The summarize() function
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Counting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="data-wrangling-with-dplyr">Data Wrangling with dplyr</h1>
+<p><code>dplyr</code> is another important package in R that makes it easy to extract and summarize insights from tabular data. Luckily, <code>dplyr</code> is included in <code>tidyverse</code> and was loaded into R's memory when we called <code>library(tidyverse)</code>.</p>
+<p>In this section, we're going to cover just the most common <code>dplyr</code> functions:</p>
+<ul>
+<li><code>select()</code>: subset columns</li>
+<li><code>filter()</code>: subset rows on conditions</li>
+<li><code>mutate()</code>: create new columns by using information from other columns</li>
+<li><code>group_by()</code> and <code>summarize()</code>: create summary statistics on grouped data</li>
+<li><code>arrange()</code>: sort results</li>
+<li><code>count()</code>: count discrete values</li>
+</ul>
+<h2 id="selecting-filtering">Selecting &amp; filtering</h2>
+<p>Selecting and filtering are both techniques to focus in on some chosen data in a data frame. <code>select()</code> is used to select specific columns of a data frame. When we call <code>select()</code>, the first argument in the parentheses will be the data frame, followed by the columns to keep, separated by commas. Let's try selecting respondent sex, birth year, immigrant status, and marital status. 
+<div class="language-R highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">select</span><span class="p">(</span><span class="n">wvs_data</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span><span class="p">,</span><span class="w"> </span><span class="n">birth_year</span><span class="p">,</span><span class="w"> </span><span class="n">immigrant</span><span class="p">,</span><span class="w"> </span><span class="n">marital_status</span><span class="p">)</span>
+</span></code></pre></div>
+Since these columns are adjacent to one another in our data frame, we can get the same result by using the <code>:</code> operator.
+<div class="language-R highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nf">select</span><span class="p">(</span><span class="n">wvs_data</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span><span class="o">:</span><span class="n">marital_status</span><span class="p">)</span>
+</span></code></pre></div></p>
+<p>Filtering, on the other hand, is used to select out rows based on conditions. To use <code>filter()</code>, you put the data frame as the first argument inside the parentheses, and the conditions as the second. For example, we can filter our data frame to include only respondents who identified as male like so:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nf">filter</span><span class="p">(</span><span class="n">wvs_data</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span><span class="o">==</span><span class="s">&#39;Male&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+Note that we used a double equals sign (==) here. The double equals sign represents a logical test of equality, testing whether the left and right values are equal. In the case of a filter, it tests whether the value of each row of left value (the variable) is equal to the right value (the desired data value). </p>
+<p>We can add further conditions to our filter, seperated by commas. For example, we can filter our data down to male respondents born in or after 1980 by running the following:</p>
+<p><div class="language-R highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">filter</span><span class="p">(</span><span class="n">wvs_data</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span><span class="o">==</span><span class="s">&#39;Male&#39;</span><span class="p">,</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">                </span><span class="n">birth_year</span><span class="o">&gt;=</span><span class="m">1980</span><span class="p">)</span>
+</span></code></pre></div>
+<strong>Practice.</strong> Using the filter function, find how many female respondents use social media for news on a daily basis. </p>
+<details class="note">
+<summary>Solution</summary>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># You should filter the data by sex and social media use for news</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nf">filter</span><span class="p">(</span><span class="n">wvs_data</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="n">sex</span><span class="o">==</span><span class="s">&#39;Female&#39;</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="n">social_media</span><span class="o">==</span><span class="s">&#39;Daily&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+<h2 id="pipes">Pipes</h2>
+<p>Pipes are a way to do more complicated operations in R, such as selecting and filtering at the same time. Pipes let you take the output of one function and send it directly to the next, which is useful when you need to do many things to the same dataset. </p>
+<p>There are two Pipes in R: the magrittr pipe (installed automatically with <code>dplyr</code>) and the native pipe. In this workshop, we will be using the margrittr pipe (which is usually the default one). Both the pipes are, by and large, function similarly with a few differences (For more information, check <a href="https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/">the tidyverse site</a>). The choice of which pipe to be used can be changed in the Global settings in R studio.</p>
+<p>Pipes are represented by <code>%&gt;%</code> in R. Rather than type it out every time, you can use the following keyboard shortcut: <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-m">M</kbd></span> (on PC) or <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-m">M</kbd></span> (on mac). </p>
+<p>Let's start by using pipes to view information about the educational attainment and marital statuses of the male respondents in our dataset. To do this, we'll start by filtering on sex and then selecting marital status and education.</p>
+<p><div class="language-R highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">wvs_data</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="nf">filter</span><span class="p">(</span><span class="n">sex</span><span class="o">==</span><span class="s">&#39;Male&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nf">select</span><span class="p">(</span><span class="n">marital_status</span><span class="p">,</span><span class="w"> </span><span class="n">education</span><span class="p">)</span>
+</span></code></pre></div>
+Running that command should print the following to your console: </p>
+<figure>
+    <img alt="image of console" src="../content/pipe_output.png" width="800" />
+    <figcaption></figcaption>
+</figure>
+<p>In the above code, we use the pipe to send the dataset first through <code>filter()</code> to keep rows where the respondent's sex is 'male' and then through <code>select()</code> to keep only the marital status and educational attainment columns. Since <code>%&gt;%</code> takes the object on its left and passes it as the first argument to the function on its right, we don’t need to explicitly include the dataframe as an argument to the <code>filter()</code> and <code>select()</code> functions any more.</p>
+<p>The dplyr functions by themselves are somewhat simple, but by combining them into linear workflows with pipes, we can accomplish more complex data wrangling operations.</p>
+<p>If we want to create a new object with this smaller, filtered, version of the data, we can assign it a new name:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">wvs_men</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wvs_data</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nf">filter</span><span class="p">(</span><span class="n">sex</span><span class="o">==</span><span class="s">&#39;Male&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nf">select</span><span class="p">(</span><span class="n">marital_status</span><span class="p">,</span><span class="w"> </span><span class="n">education</span><span class="p">)</span>
+</span></code></pre></div>
+<strong>Practice.</strong> Using pipes, subset the world values survey data to include only married respondents and to retain only information on their birth year, province of residence, and employment status (in that order). Create a new object with the data, and assign it the name "married_data."</p>
+<details class="note">
+<summary>Solution</summary>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">#Your code should look like this: </span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">married_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wvs_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nf">filter</span><span class="p">(</span><span class="n">marital_status</span><span class="o">==</span><span class="s">&quot;Married&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nf">select</span><span class="p">(</span><span class="n">birth_year</span><span class="p">,</span><span class="w"> </span><span class="n">province</span><span class="p">,</span><span class="w"> </span><span class="n">employed</span><span class="p">)</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1">#This will produce a data frame object with 3 variables and 220 observations. You should see this data frame in the Environment pane.</span>
+</span></code></pre></div>
+</details>
+<h2 id="mutate">Mutate</h2>
+<p>Frequently you’ll want to create new columns based on the values in existing columns, for example to do unit conversions, or to find the ratio of values in two columns. For this we’ll use mutate().</p>
+<p>For example, you might be interested in the age of the respondents in our dataset at the time of data collection. For this, we would need to create a new variable in our data frame that subtracts the birth year in each row for the year of data collection. </p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">wvs_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">year</span><span class="o">-</span><span class="n">birth_year</span><span class="p">))</span>
+</span></code></pre></div>
+<p><strong>Practice.</strong> How would we change the code above to save our new <code>age</code> variable? </p>
+<details class="note">
+<summary>Solution</summary>
+<p>To add this new variable to our data frame, we need to assign the mutated data to an object. It's good practice to create a new data frame in cases like this, leaving the original data intact. So, you could do something like this:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wvs_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="nf">mutate</span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">year</span><span class="o">-</span><span class="n">birth_year</span><span class="p">))</span>
+</span></code></pre></div></p>
+</details>
+<p>We can also combine the mutate function with a <code>recode</code> function to create new variables with values based on an old one. Let's try creating a dummy variable for <code>female</code> using our <code>sex</code> variable. We'll assign this new variable to the same modified data frame as above.</p>
+<p>To do this, we need to pipe a mutate function into the data frame, and then name our new variable and define it as a recode function on sex. Notice that we use the single equals sign here (unlike when we filter and select) - remember, the single equals sign functions as an assignment operator. </p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wvs_data2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">female</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">recode</span><span class="p">(</span><span class="n">sex</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">                         </span><span class="s">&#39;Male&#39;</span><span class="o">=</span><span class="m">0</span><span class="p">,</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">                         </span><span class="s">&#39;Female&#39;</span><span class="o">=</span><span class="m">1</span><span class="p">))</span>
+</span></code></pre></div>
+<p>Using the recode function will require that we list every value of the variable we're mutating, and offer an alternative value. This can be a bit unwieldy when dealing with variables with many possible values. In those cases, we can use a <code>case_when</code> function instead of <code>recode</code>, like so: </p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wvs_data</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="nf">mutate</span><span class="p">(</span><span class="n">employed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">case_when</span><span class="p">(</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">        </span><span class="n">emp_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&#39;Full time (30 hours a week or more)&#39;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">        </span><span class="kc">TRUE</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="p">))</span>
+</span></code></pre></div>
+<p>In the code above, we're telling R to create a new variable called <code>employed</code> where the value will be 1 when <code>emp_status</code> is equal to "Full time (30 hours a week or more)" and 0 in all other cases. Now we've created a new dummy variable for being employed or not. </p>
+<h2 id="split-apply-combine">Split-apply-combine</h2>
+<p>Many data analysis tasks can be approached using the split-apply-combine paradigm: split the data into groups, apply some analysis to each group, and then combine the results. <code>dplyr</code> makes this very easy through the use of the <code>group_by()</code> function.</p>
+<h3 id="the-summarize-function">The summarize() function</h3>
+<p><code>group_by()</code> is often used together with <code>summarize()</code>, which collapses each group into a single-row summary of that group. </p>
+<p><code>group_by()</code> takes as arguments the column names that contain the categorical variables for which you want to calculate the summary statistics. It is best practices to end your <code>group_by()</code> operations with the <code>ungroup()</code> function (while it won't matter for our purposes here, it can mess up later calculations if you don't ungroup). </p>
+<p>So, if we wanted to calculate the average life satisfaction of respondents with different marital statuses, we could do the following:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="nf">group_by</span><span class="p">(</span><span class="n">marital_status</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nf">summarize</span><span class="p">(</span><span class="n">mean_satisfaction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">life_satis</span><span class="p">))</span><span class="o">%&gt;%</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="nf">ungroup</span><span class="p">()</span>
+</span></code></pre></div>
+Running this code should print the following output to your console: </p>
+<figure>
+    <img alt="image of console" src="../content/split-output.png" width="800" />
+    <figcaption></figcaption>
+</figure>
+<p>Notice that we're now working with the modified version of our data, the one with the age variable that we created. </p>
+<p>We also have the option of specifying the sort order of our data. To do this, we need to add a <code>arrange()</code> function to the end of our pipeline. So, if we wanted to sort the marital status groups by their average life satisfaction, we could do this: 
+<div class="language-R highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="nf">group_by</span><span class="p">(</span><span class="n">marital_status</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nf">summarize</span><span class="p">(</span><span class="n">mean_satisfaction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">life_satis</span><span class="p">))</span><span class="o">%&gt;%</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nf">arrange</span><span class="p">(</span><span class="n">mean_satisfaction</span><span class="p">)</span><span class="o">%&gt;%</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="nf">ungroup</span><span class="p">()</span>
+</span></code></pre></div></p>
+<p>We can further customize our sorting to be from highest to lowest by adding the <code>desc()</code> function. The <code>desc()</code> function is nested inside the <code>arrange()</code> function like so <code>arrange(desc(x))</code>. </p>
+<p><strong>Practice.</strong> Use the <code>arrange()</code> and <code>desc()</code> functions to modify the above code so that our output is arranged from highest mean life satisfaction to lowest. Assign the output to a new object called "ave_life_satis."</p>
+<details class="note">
+<summary>Solution</summary>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">ave_life_satis</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wvs_data2</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="nf">group_by</span><span class="p">(</span><span class="n">marital_status</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="nf">summarize</span><span class="p">(</span><span class="n">mean_satisfaction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">life_satis</span><span class="p">))</span><span class="o">%&gt;%</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="nf">arrange</span><span class="p">(</span><span class="nf">desc</span><span class="p">(</span><span class="n">mean_satisfaction</span><span class="p">))</span><span class="o">%&gt;%</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="nf">ungroup</span><span class="p">()</span>
+</span></code></pre></div>
+</details>
+<h2 id="counting">Counting</h2>
+<p>The <code>count()</code> function in <code>dplyr</code> lets us count (intuitive, I know) observations. Importantly, we can include arguments that allow us to count observations based on different factors or combinations or factors. </p>
+<p>To use the <code>count()</code> function to count the values in a column within a data frame, we need to pipe it from the data frame object. </p>
+<p>For example, let's use the <code>count()</code> function to count the number of respondents with university degrees.<br />
+<div class="language-R highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nf">count</span><span class="p">(</span><span class="n">education</span><span class="p">)</span>
+</span></code></pre></div></p>
+<p>How many respondents report having completed university degrees? What is the most common degree among our respondents? We can add a <code>sort</code> argument to our function to make it easier to tell. </p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nf">count</span><span class="p">(</span><span class="n">education</span><span class="p">,</span><span class="w"> </span><span class="n">sort</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Go ahead and save the modified data you've created. Save it to the <code>data_output</code> folder we created using the <code>write_csv</code> function and name it 'modified_wvs_data.csv', like so: </p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nf">write.csv</span><span class="p">(</span><span class="n">wsv_data2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;./data_output/modified_wvs_data.csv&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

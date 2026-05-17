@@ -1,0 +1,1168 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://finnsdottir.github.io/r-clusters-may2026/syntax/">
+      
+      
+        <link rel="prev" href="../basics/">
+      
+      
+        <link rel="next" href="../getting_started/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Basic syntax - Using R on HPC clusters</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#basic-syntax-concepts" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Using R on HPC clusters" class="md-header__button md-logo" aria-label="Using R on HPC clusters" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Using R on HPC clusters
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Basic syntax
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Using R on HPC clusters" class="md-nav__button md-logo" aria-label="Using R on HPC clusters" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Using R on HPC clusters
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to R and RStudio (Session 1)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction to R and RStudio (Session 1)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basic syntax
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basic syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-frames" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data frames
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vectors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#missing-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-your-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving your work
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started in RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inspecting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inspecting data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wrangling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wrangling data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualizing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualizing data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using R on the clusters (Session 2)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using R on the clusters (Session 2)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../session2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rstudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accessing R and RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analysing_rstudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysing data in RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rscripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using R in the shell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../batch_jobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running jobs with R
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-frames" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data frames
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vectors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#missing-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-your-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving your work
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="basic-syntax-concepts">Basic Syntax &amp; Concepts</h1>
+<p>Before we start working with our world values survey dataset,let's go over some of the basic concepts and syntax in R. </p>
+<p>One important thing to note is that all data structures in R are referred to as 'objects.' This means that data frames, vectors, and variables are all different kinds of objects in R. </p>
+<h2 id="operators">Operators</h2>
+<p>Operators are special symbols or keywords used to perform operations on one or more values. Common operators include:</p>
+<ul>
+<li>Assignment operators. We can use the operators <code>&lt;-</code> and <code>=</code> to assign a value to a variable/object. When naming an object in R, avoid using the names of fundamental objects (like 'mean), periods, or numbers at the beginning. Try creating variables for the day and month and assigning them values by running the following in the Source Editor: 
+<div class="language-R highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">day</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">3</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span>
+</span></code></pre></div></li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Note</p>
+<p>RStudio allows for several quick keyboard shortcuts. One useful shortcut is <span class="keys"><kbd class="key-alt">Alt</kbd><span>+</span><kbd class="key-minus">-</kbd></span> (on PC) or <span class="keys"><kbd class="key-option">Option</kbd><span>+</span><kbd class="key-minus">-</kbd></span> (on mac) to write the assignment operator <code>&lt;-</code>.</p>
+</div>
+<ul>
+<li>Arithmetic operators. The operators <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code> are used for basic mathematical calculations, namely addition, subtraction, multiplication, and division. Try running the following in your Source Editor and watching what appears in the console:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="m">4+2</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="m">4</span><span class="o">/</span><span class="m">2</span>
+</span></code></pre></div></li>
+</ul>
+<details class="note">
+<summary>Output</summary>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">&gt;</span><span class="w"> </span><span class="m">4+2</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="m">6</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="o">&gt;</span><span class="w"> </span><span class="m">4</span><span class="o">/</span><span class="m">2</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="m">2</span>
+</span></code></pre></div>
+</details>
+<ul>
+<li>Comparison operators. The operators <code>&lt;</code>, <code>&gt;</code>, <code>!=</code> and <code>==</code> return a logical value when used to compare two things. In R, you can use <code>!</code> to represent a negative (so, <code>!=</code> means not equal to). Notice also that you must use a double equals sign (a single equals sign is an assignment operator, as we covered above). Try running the following:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="m">4</span><span class="o">!=</span><span class="m">3</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="m">4</span><span class="o">&lt;</span><span class="m">3</span>
+</span></code></pre></div></li>
+</ul>
+<details class="note">
+<summary>Output</summary>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">&gt;</span><span class="w"> </span><span class="m">4</span><span class="o">!=</span><span class="m">3</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="kc">TRUE</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="o">&gt;</span><span class="w"> </span><span class="m">4</span><span class="o">&lt;</span><span class="m">3</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="kc">FALSE</span>
+</span></code></pre></div>
+</details>
+<ul>
+<li>Logical operators. The operators <code>&amp;</code> (and), <code>|</code> (or), and <code>!</code> (not) are used to perform logical operators. These are a bit more complicated to use, but here is a simple example:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">#the single &amp; operator represents an element-wise logical AND. It will return TRUE if both corresponding elements are true. Run the following:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nf">c</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span><span class="kc">TRUE</span><span class="p">,</span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span><span class="kc">FALSE</span><span class="p">,</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1">#Running the code above should return the following output:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w">  </span><span class="kc">TRUE</span><span class="w"> </span><span class="kc">FALSE</span><span class="w"> </span><span class="kc">FALSE</span>
+</span></code></pre></div></li>
+<li>Other miscellaneous operators:<ul>
+<li>The hash sign <code>#</code> indicates a comment in the code</li>
+<li>The colon sign <code>:</code> creates a sequence of numbers </li>
+<li>The square brackets <code>[]</code> indexed an object, such as a vector</li>
+<li>The dollar sign <code>$</code> accesses a variable from a dataframe</li>
+<li>The percent sign <code>%</code> is used for some special operators to string operations together</li>
+<li>The double colon <code>::</code> accesses functions or variables from a specific package</li>
+</ul>
+</li>
+</ul>
+<h2 id="data-types">Data types</h2>
+<p>The most common data types in R are:</p>
+<ol>
+<li>Numeric data (numbers with decimal points, either integers or floats)</li>
+<li>Character data (text strings)</li>
+<li>Factor data (categorial data with a fixed set of values or levels)</li>
+<li>Logical data (boolean values or logical values)</li>
+</ol>
+<p>Data types are important because they determine how data is stored, processed, and analyzed. Choosing the appropriate data type can help you optimize your memory usage, perform the necessary data manipulations, conduct the appropriate statistical analyses, and create effective visualizations of your data.</p>
+<h2 id="data-frames">Data frames</h2>
+<p>Data frames are a very common type of data structure used in R. A data frame is a two-dimensional tabular structure representing a grid of data, where each row represents an observation and each column represents a variable. </p>
+<h2 id="vectors">Vectors</h2>
+<p>Vectors are another important type of data structure in R. A vector is a basic, one-dimensional data structure that represents a sequence of values of the same data type, whether numbers or letters. </p>
+<p>Creating vectors is straightforward: you just use the assignment operator and the <strong>c()</strong> function, which combines values. Try running the following code to make some vectors describing the Hollywood Chris's:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">chris_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;pratt&#39;</span><span class="p">,</span><span class="s">&#39;hemsworth&#39;</span><span class="p">)</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">chris_age_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">44</span><span class="p">,</span><span class="m">46</span><span class="p">,</span><span class="m">42</span><span class="p">,</span><span class="m">45</span><span class="p">)</span>
+</span></code></pre></div>
+Now that you've created these two vectors, you should see them in your environment in the top right pane of the RStudio console.</p>
+<div class="admonition info">
+<p class="admonition-title">Note</p>
+<p>Be sure to include quotation marks around the text data you're combining into a vector. If you do not have quotation marks, R will assume that you are referring to objects, not data values.</p>
+</div>
+<p>You can call functions on vectors. For example, you can inspect the length, structure, and type of vectors. Run these three functions. Your output will appear in the console - did you get what you expected to see?
+<div class="language-R highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nf">length</span><span class="p">(</span><span class="n">chris_age_vector</span><span class="p">)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nf">str</span><span class="p">(</span><span class="n">chris_age_vector</span><span class="p">)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nf">typeof</span><span class="p">(</span><span class="n">chris_vector</span><span class="p">)</span>
+</span></code></pre></div></p>
+<details class="note">
+<summary>Output</summary>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">&gt;</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">chris_age_vector</span><span class="p">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="m">4</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="o">&gt;</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">chris_age_vector</span><span class="p">)</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">]</span><span class="w"> </span><span class="m">44</span><span class="w"> </span><span class="m">46</span><span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="m">45</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="o">&gt;</span><span class="w"> </span><span class="nf">typeof</span><span class="p">(</span><span class="n">chris_vector</span><span class="p">)</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="s">&quot;character&quot;</span>
+</span></code></pre></div>
+</details>
+<p>It is also fairly straightforward to add elements to the beggining or end of your vector. Run the following code in your source editor or console:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">chris_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="nf">c</span><span class="p">(</span><span class="n">chris_vector</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pine&quot;</span><span class="p">)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">chris_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;evans&quot;</span><span class="p">,</span><span class="n">chris_vector</span><span class="p">)</span>
+</span></code></pre></div>
+Once you've done this, you should see the values of chris_vector change in the environment pane.</p>
+<p>Importantly, if you try to put data of different types into one vector, R will coerce them automatically to all be the same type.</p>
+<p>Let's try creating a vector including the last name and age for two of the Hollywood Chris's. Basically, we are trying to make a vector with two strings and two integers.
+<div class="language-R highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">name_age_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;evans&quot;</span><span class="p">,</span><span class="w"> </span><span class="m">44</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pratt&quot;</span><span class="p">,</span><span class="w"> </span><span class="m">46</span><span class="p">)</span>
+</span></code></pre></div>
+What happens to the data in our vector? Call <code>str(name_age_vector)</code>. How has R changed it? </p>
+<details class="note">
+<summary>Solution</summary>
+<p>R will have coerced the vector into a character vector. This means that all four values, the ages included, will be treated as text. </p>
+<p>When different data types are combined within a single atomic vector, R applies a coercion hierarchy to determine the resulting data type of the entire vector. Data are coerced from simplest to richest, followng the order of Logical -&gt; Integer -&gt; Numeric -&gt; Complex -&gt; Character. </p>
+<p>For example: If a vector contains both logical and integer values, all logical values will be coerced to integer (e.g., TRUE becomes 1, FALSE becomes 0). Or, if a vector contains numeric and character values, all numeric values will be coerced to character (as happened in our example).</p>
+</details>
+<h2 id="functions">Functions</h2>
+<p>A function is a 'canned script' that automates a block of code that performs a specifc task and can be easily called and executed by the user. Functions are an essential component of programming in R. </p>
+<p>When R is installed, it comes with the default package <code>base</code> which contains a number of useful built-in functions. These include:</p>
+<ul>
+<li><code>mean()</code> calculates the mean of a vector of numbers</li>
+<li><code>sd()</code> calculates the standard deviation of a vector of numbers</li>
+<li><code>str()</code> displays the structure of an R object</li>
+<li><code>table()</code> creates a frequency table of a vector or factor</li>
+<li><code>plot()</code> creates a basic plot of data</li>
+</ul>
+<p>Try calculating the average age of the Hollywood Chris's using some of R's built-in functions. What function will you use? What output do you get? </p>
+<details class="note">
+<summary>Output</summary>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">&gt;</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">chris_age_vector</span><span class="p">)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="m">44.25</span>
+</span></code></pre></div>
+</details>
+<p>You can also define your own functions in R using the function <code>function</code>, like so: 
+<div class="language-R highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">my_function</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kr">function</span><span class="w"> </span><span class="p">(</span><span class="n">arguments</span><span class="p">){</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="n">R</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">excuted</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="p">}</span>
+</span></code></pre></div></p>
+<h2 id="packages">Packages</h2>
+<p>Different packages in R will come with their own built-in functions. Packages are collections of data, functions, and documentation. Packages are how we expand R beyond the base package. </p>
+<p>R packages are developed by the user community, and are all available for free. The <strong>Packages</strong> tab in RStudio lists all packages already installed in your R instance. </p>
+<figure>
+    <img alt="r packages" src="../content/packages_tab.jpg" width="800" />
+    <figcaption>All already installed packages are listed under the Packages tab.</figcaption>
+</figure>
+<p>For a full list of all published packages, you can check out the <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">R website</a>.</p>
+<p>Packages only need to be installed once. Once they're installed, though, you do need to call them before you can use them and their built-in functions. Let's practice installing and calling packages with <a href="https://cran.r-project.org/web/packages/tidyverse/index.html"><code>tidyverse</code></a>, a very common R package for simple data work. 
+<div class="language-R highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">#installing a package</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nf">install.packages</span><span class="p">(</span><span class="s">&#39;tidyverse&#39;</span><span class="p">)</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1">#calling a package</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+</span></code></pre></div>
+Now you should see <code>tidyverse</code> appear in the Packages tab. </p>
+<p>Alternatively, you can install a package by clicking the <strong>Install</strong> button on the top left of the Packages pane. Similarly, you can load a package by checking the box beside the installed package. In both cases, you will see the work that R is doing to install and load the package in the Console. </p>
+<h2 id="missing-data">Missing data</h2>
+<p>As a progamming language made for analysing datasets, R includes ways of dealing with missing data. Missing data is represented as <code>NA</code> in R. When doing operations on numbers in R, most functions will return <code>NA</code> if there are missing values in your data. </p>
+<p>One way to sidestep this problem is to include the argument <code>na.rm=TRUE</code> in your operation. This tells R to calculate the result while ignoring missing values. </p>
+<p>To test this out, let's start by adding a missing value to our <code>chris_age_vector</code> and trying to calculate the mean. 
+<div class="language-R highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">chris_age_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="n">chris_age_vector</span><span class="p">)</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nf">mean</span><span class="p">(</span><span class="n">chris_age_vector</span><span class="p">)</span>
+</span></code></pre></div>
+What happens when we try to calculate the mean? How do we fix our function? </p>
+<details class="note">
+<summary>Solution</summary>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1">#if we want to calculate the mean of our chris age vector, we need to add an argument to remove the missing value from our calculation.</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="nf">mean</span><span class="p">(</span><span class="n">chris_age_vector</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="c1">#When you run this new function, you should get an output of 44.25. </span>
+</span></code></pre></div>
+</details>
+<p>You can also check whether your data has any missing values using <code>is.na()</code>. This command returns a logical value of either TRUE or FALSE depending on whether there are missing values in your object or not. </p>
+<h2 id="saving-your-work">Saving your work</h2>
+<p>Saving your work is a crucial piece of the workflow in R. Throughout this workshop, we will be saving our work, including the data frames, plots, and script we create. </p>
+<p>You can save your script simply by clicking the save button (the one that looks like a floppy disk) in the tool bar of the Source Editor. From there, it will prompt you to choose a name and location to save your file. </p>
+<p>Plots can be saved in two ways. One option is to click the <strong>Export</strong> button in the tool bar of the <strong>Plot</strong> tab in the bottom right hand pane of RStudio. Alternatively, you can run code in your script to save your plots. The specific code will vary across packages; to save your plots in <code>ggplot2</code>, which we will cover towards the end of this session, you can run the following code: 
+<div class="language-R highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nf">ggsave</span><span class="p">(</span><span class="s">&quot;your_plot_name.png&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">plot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">your_plot</span><span class="p">)</span>
+</span></code></pre></div></p>
+<p>Finally, to save data frames, you'll need to write them into the folder where you'd like them saved. We'll practice this later, but the basic code for saving a dataframe is as follows:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nf">write.csv</span><span class="p">(</span><span class="n">data_frame_name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;./path&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

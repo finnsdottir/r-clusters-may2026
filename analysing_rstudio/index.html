@@ -1,0 +1,954 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://finnsdottir.github.io/r-clusters-may2026/analysing_rstudio/">
+      
+      
+        <link rel="prev" href="../rstudio/">
+      
+      
+        <link rel="next" href="../rscripts/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Analysing data in RStudio - Using R on HPC clusters</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#analysing-data-in-rstudio" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Using R on HPC clusters" class="md-header__button md-logo" aria-label="Using R on HPC clusters" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Using R on HPC clusters
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Analysing data in RStudio
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Using R on HPC clusters" class="md-nav__button md-logo" aria-label="Using R on HPC clusters" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Using R on HPC clusters
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to R and RStudio (Session 1)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction to R and RStudio (Session 1)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basic syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started in RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inspecting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inspecting data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wrangling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wrangling data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualizing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualizing data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using R on the clusters (Session 2)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using R on the clusters (Session 2)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../session2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rstudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accessing R and RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysing data in RStudio
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysing data in RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cleaning-the-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cleaning the data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-statistical-relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing statistical relationships
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rscripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using R in the shell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../batch_jobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running jobs with R
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cleaning-the-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cleaning the data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-statistical-relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing statistical relationships
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="analysing-data-in-rstudio">Analysing data in RStudio.</h1>
+<p>For our workshop today, we'll be modelling a workflow for R analyses on HPC. We'll begin by developing and debugging our script on RStudio using a subset of the data before submitting an anlaysis of the full dataset as a batch job on the cluster through our shell. </p>
+<p>Begin by navigating back to your interactive RStudio session in JupyterHub in your browser. </p>
+<p>We're going to start by setting up our working directory, before loading in our libraries. We want to be working inside the <code>R</code> directory. To check if you're already working there, run <code>getwd()</code>. If you are not yet inside the <code>R</code> directory, you can set it by running <code>setwd('path/to/R')</code> like so: </p>
+<p><div class="language-R highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">setwd</span><span class="p">(</span><span class="s">&#39;./R&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nf">getwd</span><span class="p">()</span>
+</span></code></pre></div>
+Next, you'll want to create folders for your modigied data and for the tables and figures you'll produce. This is not necessary but is part of creating a neat working space and clean workflow. </p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nf">dir.create</span><span class="p">(</span><span class="s">&#39;data_output&#39;</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nf">dir.create</span><span class="p">(</span><span class="s">&#39;fig_output&#39;</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nf">dir.create</span><span class="p">(</span><span class="s">&#39;table_output&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>If not all your new folders show up when you run the lines, try refreshing the <code>Files</code> pane. </p>
+<p>Next, our analyses will require the following packages; <code>tidyverse</code>, <code>stats</code>, <code>broom</code>, and <code>naniar</code>. For today's session, the packages we need are already downloaded in a shared directory. To direct R to that directory, you'll need to include the following line of code in your script:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nf">.libPaths</span><span class="p">(</span><span class="s">&quot;/project/def-sponsor00/common/lib/R&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+Once you've run that, load the required packages like so:
+<div class="language-R highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nf">library</span><span class="p">(</span><span class="n">broom</span><span class="p">)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nf">library</span><span class="p">(</span><span class="n">naniar</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nf">library</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+</span></code></pre></div>
+Now that we have our RStudio set up, we need to upload our data. The data we're using in today's session is saved in a shared directory, so we can read it in like so:</p>
+<p><div class="language-R highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">wvs_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.csv</span><span class="p">(</span><span class="s">&quot;/project/def-sponsor00/common/wvs_subset.csv&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+This is the subset of data that we used in part one of the workshop, and includes the modifications (new variables created) that we made. It is a subset of 500 rows from the World Values Survey Wave 7 data on Canada. You can read more about it at the top of the <a href="../inspecting/">Inspecting data</a> page. </p>
+<p>We're going to use this data to continue exploring the relationship between life satisfaction and various sociodemographic facors. <strong>Specifically, we will test the impact of age on life satisfaction, controlling for sex, education, full time employment, and marital status.</strong> We're going to test this relations with a linear regression using the <code>lm()</code> function in the <code>stats</code> package. </p>
+<details class="note">
+<summary>Other ways to upload data</summary>
+</details>
+<ol>
+<li>Data can be moved into the cluster using <a href="https://docs.alliancecan.ca/wiki/Globus/en">Globus</a>. Here's a <a href="https://www.youtube.com/watch?v=0JJaFV4PEhk">video explaining how</a>.</li>
+<li>You can import data directly into JupyterHub in your broswer. After launching a server, with the JupyterLab user interface, select the <a href="../content/upload_file_jupyter.png">upload files button</a> and open the desired file in your finder. </li>
+<li>Using a secure copy protocol, or <code>scp</code>. The <code>scp</code> command follows the structure <code>scp &lt;file start location&gt; &lt;file end location&gt;</code> whether you are moving data on to the remote server from your computer, or from the remote server on to your computer. When the file location is on the remote server, it must start with <code>&lt;username&gt;@&lt;remote server address&gt;:</code> and then the file location on the server. </li>
+</ol>
+<h2 id="cleaning-the-data">Cleaning the data</h2>
+<p>Before we can run our analyses, we need to clean our data. Specifically, we need to create our dummy variable controls and properly deal with missing data. </p>
+<p>Remember that missing data in R should be represented by <code>NA</code>. In our current dataset, missing data is represented by strings such as 'not applicable' and 'don't know'. Before we do any more analyses, we'll need to replace those with <code>NA</code> values. To do this, we will use functions from the <code>naniar</code> package.</p>
+<p>Let's check what missing data is labelled as in the <code>education</code> variable using the <code>unique()</code> function:</p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nf">unique</span><span class="p">(</span><span class="n">wvs_data</span><span class="o">$</span><span class="n">education</span><span class="p">)</span>
+</span></code></pre></div>
+<p>What values would we consider to be missing data? </p>
+<p>Let's now replace them with <code>NA</code> using the <code>replace_with_na</code> function in <code>naniar</code>. We will need to supply the function with arguments that specify the variable to be edited and the values to be replaced. Let's also assign this modified data to a new object, in order to preserve the original data. </p>
+<p><div class="language-R highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wvs_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">replace_with_na</span><span class="p">(</span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">education</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Don&#39;t know&quot;</span><span class="p">))</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nf">unique</span><span class="p">(</span><span class="n">wvs_data2</span><span class="o">$</span><span class="n">education</span><span class="p">)</span>
+</span></code></pre></div>
+Run <code>unique()</code> again and observe what happened to the 'Don't know' values in education. </p>
+<div class="admonition note note">
+<p class="admonition-title">Note</p>
+</div>
+<p>The <code>naniar</code> package also has a function that allows us to replace a particular value with <code>NA</code> across an entire data frame:</p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">data2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">replace_with_na_all</span><span class="p">(</span><span class="n">condition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">.x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">missing</span><span class="p">)</span>
+</span></code></pre></div>
+<p>In this code, we use the function <code>replace_with_na_all</code> and supply it with the conditional argument replacing any variable's (represented by ~.x) specified missing value with <code>NA</code>. We then assign it into a modified data frame. </p>
+<p>We're now going further recode the <code>education</code> variable to create a dummy for university degree. Remember that we can do this using the <code>mutate</code> and <code>case_when()</code> or <code>recode</code> functions in <code>dplyr</code>. </p>
+<p><div class="language-R highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wvs_data2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">uni_degree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">case_when</span><span class="p">(</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="n">education</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;Bachelor or equivalent (ISCED 6)&quot;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="n">education</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;Master or equivalent (ISCED 7)&quot;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="n">education</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;Doctoral or equivalent (ISCED 8)&quot;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="kc">TRUE</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="p">))</span>
+</span></code></pre></div>
+We will also need to create a dummy variable for being married (from <code>marital_status</code>). Let's treat being married and living together as married as the same in our analyses. Remember that we already created variables for <code>age</code>, <code>employed</code>, and <code>female</code> in part one of this workshop.
+<div class="language-R highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">wvs_data2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wvs_data2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">married</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">case_when</span><span class="p">(</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="n">marital_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;Living together as married&quot;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="n">marital_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&#39;Married&#39;</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="kc">TRUE</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="p">))</span>
+</span></code></pre></div></p>
+<h2 id="testing-statistical-relationships">Testing statistical relationships</h2>
+<p>Now that our data is ready, let's start thinking about the relationship between our independent and dependet variables - that is, between age and life satisfaction. We can first run a correlation, using the <code>cor()</code> function and supplying arguments for our <code>x</code> and <code>y</code> variables, like so: </p>
+<p><div class="language-R highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nf">cor</span><span class="p">(</span><span class="n">wvs_data2</span><span class="o">$</span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">wvs_data2</span><span class="o">$</span><span class="n">life_satis</span><span class="p">)</span>
+</span></code></pre></div>
+This should produce a correlation coefficient of around 0.246 in your console. That represents a weak positive correlation between age and life satisfaction, meaning that older folks are slightly more satisfied with the lives than younger ones.</p>
+<p>Luckily, our data on age and life satisfaction is complete, or else our <code>cor()</code> function would return <code>NA</code>. If we had any missing data, we would need to include the argument <code>use='complete.obs'</code> within the parantheses to tell the function to ignore incomplete cases. Remember that you can also go to the "Help" tab in RStudio to learn more about individual packages or functions. </p>
+<p>Taking this another step further, let's now run a linear regression of life satisfaction on age to test the statistical significant of the relationship. We do this with the <code>lm()</code> function in the <code>stats</code> package. The basic structure of a linear regression in R is <code>model &lt;- lm(x ~ y, data=data)</code>. </p>
+<p>Let's run this model, assiging it to an object named <code>model.1</code>. Run the <code>summary()</code> function on the model afterwards to print the regression results to your console. </p>
+<p><div class="language-R highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">model.1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">life_satis</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">wvs_data2</span><span class="p">)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nf">summary</span><span class="p">(</span><span class="n">model.1</span><span class="p">)</span>
+</span></code></pre></div>
+What do the results tell us about the relationship between age and life satisfaction? Note that now that we're using inferential methods, we can speak about the population in general, not just about our sample. </p>
+<p>Obviously, the relationship between these things is more complicated. So, let's try adding some control variables to see how that influences the slight, positive, relationship between age and life satisfaction. We can build on the basic linear model structure in R by adding control variables behind the independent variable with <code>+</code> signs.</p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">model.2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">life_satis</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">female</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">uni_degree</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">employed</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">married</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wvs_data2</span><span class="p">)</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nf">summary</span><span class="p">(</span><span class="n">model.2</span><span class="p">)</span>
+</span></code></pre></div>
+<p>What does this regression tell us about the sociodemographic factors influencing life satisfaction among Canadians? </p>
+<p>Unfortunately, the way R naturally displays regression output is quite messy. We can produce a much nicer output using the <code>tidy</code> function from the <code>broom</code> package. Let's call <code>tidy</code> on our second model, and then save that output as a csv file to our data output folder.</p>
+<p><div class="language-R highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">tidy_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">tidy</span><span class="p">(</span><span class="n">model.2</span><span class="p">)</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">tidy_model</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="nf">write.csv</span><span class="p">(</span><span class="n">tidy_model</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;./table_output/tidy_lm_model.csv&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+Now that we've created a script that cleans our data and runs our analyses, we'll need to modify it to work as a batch job on the cluster. But first, save your modified data and your R script. You can save your script in the browser window, and run the following to save your data:</p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nf">write.csv</span><span class="p">(</span><span class="n">wvs_data2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;./data_output/modified_wvs_subset.csv&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

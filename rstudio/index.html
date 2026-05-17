@@ -1,0 +1,992 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://finnsdottir.github.io/r-clusters-may2026/rstudio/">
+      
+      
+        <link rel="prev" href="../session2/">
+      
+      
+        <link rel="next" href="../analysing_rstudio/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Accessing R and RStudio - Using R on HPC clusters</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#using-r-on-hpc" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Using R on HPC clusters" class="md-header__button md-logo" aria-label="Using R on HPC clusters" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Using R on HPC clusters
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Accessing R and RStudio
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Using R on HPC clusters" class="md-nav__button md-logo" aria-label="Using R on HPC clusters" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Using R on HPC clusters
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to R and RStudio (Session 1)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction to R and RStudio (Session 1)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../syntax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basic syntax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started in RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inspecting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inspecting data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wrangling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wrangling data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualizing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualizing data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using R on the clusters (Session 2)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using R on the clusters (Session 2)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../session2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accessing R and RStudio
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accessing R and RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-rstudio-in-your-browser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing RStudio in your browser
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-r-through-the-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing R through the shell
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing R through the shell">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logging-in-using-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging in using ssh
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#working-in-the-remote-system-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working in the remote system shell
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analysing_rstudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysing data in RStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rscripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using R in the shell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../batch_jobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running jobs with R
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-rstudio-in-your-browser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing RStudio in your browser
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-r-through-the-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing R through the shell
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing R through the shell">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logging-in-using-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging in using ssh
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#working-in-the-remote-system-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working in the remote system shell
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="using-r-on-hpc">Using R on HPC.</h1>
+<p>There are two ways to use R on the Alliance's HPC clusters. The first, and easiest, way is to access RStudio through JupyterHub in your browser window. This is a great way to test code, run visualizations, and do other light work, but bigger jobs should be submitted through the batch job system. </p>
+<h2 id="accessing-rstudio-in-your-browser">Accessing RStudio in your browser</h2>
+<p>To access RStudio in your browser, start by locating the web address of the cluster you want to log in to (you can find the various URLs in the <a href="https://docs.alliancecan.ca/wiki/National_systems#Compute_clusters">Alliance documentation</a>). For example, if we want to use RStudio on Fir, we need to navigate to <code>https://jupyterhub.fir.alliancecan.ca/</code>. </p>
+<p>From there, you'll need to log in with your Alliance credentials and then start a server session. On the JupyterHub landing page, you'll have options for how long you want your session to last, how many cores you need, and how much memory you want. You will also be able to specify the GPU configuration and the user interface. </p>
+<div class="admonition note note">
+<p class="admonition-title">Note</p>
+<p>Because these interactive sessions are meant to be for light work and debugging, you are more limited in the amount of compute and memory you can ask for than you would be when submitting jobs through the shell (which we will cover later on). </p>
+</div>
+<figure>
+    <img alt="image of console" src="../content/jupyterhub.png" width="600" />
+    <figcaption></figcaption>
+</figure>
+<div class="admonition note note">
+<p class="admonition-title">Note</p>
+<p>For today's session, we'll be using a training cluster spun up specifically for this workshop. You will be provided the URL and log in information in the session.</p>
+</div>
+<p>After you've started your session, if this is the first time you've used RStudio on this cluster, you'll need to load your chosen RStudie and R modules. Navigate to the menu on the left side of the screen, and click on the hexagon icon. From there, you can scroll down through the available modules and select <code>r/4.5.0</code> and <code>rstudio-server/4.5</code>. Finally, click on the RStudio button that should now have appeared under the Notebook heading. </p>
+<figure>
+    <img alt="image of console" src="../content/launch-r.png" width="600" />
+    <figcaption></figcaption>
+</figure>
+<p>By default, there are only a small number of packages installed in RStudio on the clusters. The first time you log into RStudio on a cluster, you will need to install the packages you use through the shell/terminal (<a href="https://docs.alliancecan.ca/wiki/R#Installing_R_packages">see more here</a>). As the clusters are not hooked up to the internet, you cannot do this within RStudio. Instead, you  will need to log into the cluster through the shell, launch an R session there, and install your packages. </p>
+<h2 id="accessing-r-through-the-shell">Accessing R through the shell</h2>
+<p>The first step to access R on the Alliance's HPC clusters is to securely log in (using <code>ssh</code>) to your chosen cluster through the shell. Depending on your operating system, you'll either use the Terminal (on Linux and Mac) or the Command Prompt (on Windows) application to access the shell. </p>
+<h3 id="logging-in-using-ssh">Logging in using ssh</h3>
+<p>In order to log into one of the Alliance's clusters, we need to use a secure shell remote login client; the command for this is <code>ssh</code>. The basic structure of the command is: </p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh<span class="w"> </span>username@remote_system_url
+</span></code></pre></div>
+<p>The arguments in this command are (1) the username you've been assigned in the remote system, and (2) the URL/address of the system you are trying to connect to.</p>
+<p>To log in to an Alliance cluster, you will use your <a href="https://www.alliancecan.ca/en/our-services/advanced-research-computing/account-management/apply-account">CCDB</a> username and the <a href="https://docs.alliancecan.ca/wiki/National_systems#Compute_clusters">address of one of the clusters</a>. For example, if user000 were to log in to the Fir cluster, they would use the following ssh command: </p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ssh<span class="w"> </span>user000@fir.alliancecan.ca
+</span></code></pre></div>
+<p>For step-by-step video on logging into the Alliance's clusters, <a href="https://www.youtube.com/watch?v=MAyLpC8zyQE">click here</a>. </p>
+<p>The first time you log in to a system, you will get a warning message with a fingerprint challenge alerting you that your computer doesn't recognize the key fingerprint of the remote system. For example, here is a fingerprint challenge I encountered logging into a workshop cluster for the first time: </p>
+<figure>
+    <img alt="image of console" src="../content/fingerprint_challenge.png" width="600" />
+    <figcaption> </figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Reasons you might see a fingerprint challenge when logging in:</p>
+<ol>
+<li>This is your first connection with the specific cluster.</li>
+<li>You have removed the cluster address entry from your computer’s ~/.ssh/known_hosts file. This file contains the key fingerprints of remote systems you have previously connected to. When you start an SSH session, ssh checks the key fingerprint in this file to the one presented during an SSH connection attempt. If they are different, it will ask you to confirm the connection attempt.</li>
+<li>The servers ssh configurations have been updated, causing the key fingerprint to change. Before confirming the connection, contact the server administrators to confirm the update before continuing. The Alliance cluster key fingerprints are available for comparison on the technical documentation wiki <a href="https://docs.alliancecan.ca/wiki/SSH_security_improvements#SSH_host_key_fingerprints">SSH Security Improvements</a> page.</li>
+<li>A bad actor has created an on-path cyberattack to capture your username and password for future use.</li>
+</ol>
+</div>
+<p>Type <code>yes</code> to continue connecting to the remote system only if reasons 1, 2, or 3 explain why you are seeing the challenge message. </p>
+<p>When you type your password in, you will <strong>not see anything appear on the screen</strong>: your password will not be printed, nor will you see any key stroke indicators like dots or asterisks. This means you need to be extra careful typing your password - entering an incorrect password more than a few times will cause the system to block your connection attempts for some period of time before you can try again. </p>
+<div class="admonition note">
+<p class="admonition-title">Using the Alliance clusters.</p>
+<p>The Alliance clusters use <a href="https://docs.alliancecan.ca/wiki/Multifactor_authentication">multifactor authentication</a> for logging in, meaning that you will need to have it set up before trying to connect to a cluster.</p>
+</div>
+<h3 id="working-in-the-remote-system-shell">Working in the remote system shell</h3>
+<p>Once you are logged in, you will notice that the command prompt in your shell has changed, indicating that you are now in a different system. Your prompt will display your username on this system, the system's name, and your current working directory, followed by a prompt symbol.</p>
+<p>For example, when I log in to this session's training cluster, in my prompt line I see that my username is <code>user001</code>, that I am logged in to the <code>login1</code> node on the remote system, and that I am in my home directory (represented by the <code>~</code>):</p>
+<figure>
+    <img alt="image of console" src="../content/logged-in.png" width="600" />
+    <figcaption></figcaption>
+</figure>
+<p>Type the command <code>ls</code> to list the objects in your home directory. You should by default have a <code>project</code> and a <code>scratch</code> directory. If you have already used RStudio on this cluster through your browser, you shoudl also see a <code>R</code> directory. Navigate into that directory using the following command:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>R
+</span></code></pre></div>
+<p>There are two ways to launch an R session on the cluster. One option is to just type <code>R</code> and hit enter, and then select the version of R that you want to use from the list that appears. </p>
+<p>The neater way (provided you know which version you want to use) is to load the version of R and then launch it, like so: </p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>module<span class="w"> </span>load<span class="w"> </span>r/4.5.0
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>R
+</span></code></pre></div>
+<p>Once that is loaded up, you can work in R just like you would locally. Importantly, you'll be able to install the required packages the normal way, by calling <code>install.packages()</code>. For this workshop, you'll need to install <code>tidyverse</code>, <code>broom</code>, <code>coefplot</code>, and <code>naniar</code>:</p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nf">install.packages</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;tidyverse&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;broom&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;coefplot&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;naniar&#39;</span><span class="p">))</span>
+</span></code></pre></div>
+<p>The first time you install a package through the shell, R will ask whether you want to create a personal library in your home directory - answer <code>yes</code>. You will then have to select a CRAN mirror to use (I generally use Canada (ON1) but you can pick whichever).</p>
+<p>Once the package is installed (which may take several minutes) you'll need to restart your RStudio session in JupyterHub. Once you've done that, you should see <code>tidyverse</code> in your list of available packages in the packages pane. </p>
+<div class="admonition note note">
+<p class="admonition-title">Note</p>
+<p>The training cluster we're using in this session has been set up to already have our required packages downloaded in a shared directory (thank you to the ACENET team!). To access these packages, we will be including this command setting our library path in our R scripts:</p>
+<div class="language-R highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nf">.libPaths</span><span class="p">(</span><span class="s">&quot;/project/def-sponsor00/common/lib/R&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
