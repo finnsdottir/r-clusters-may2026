@@ -10,7 +10,7 @@ This session is suitable for beginners with no prior knowledge of R. There are n
 1. Learn to use RStudio
 2. Become familiar with the basic syntax and concepts of R
 3. Be able to create projects and organized working directories
-4. Become familiar with R packages, including ‘tidyverse’ and ‘ggplot2’
+4. Become familiar with popular R packages, including ‘tidyverse’ and ‘ggplot2’
 5. Be able to conduct basic data analysis and visualisations
 
 ## Before we start
